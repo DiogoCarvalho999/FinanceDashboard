@@ -13,5 +13,5 @@ public class TransactionRequest {
     private String type; // "INCOME" ou "EXPENSE"
     private LocalDate date;
     private Long categoryId;
-    private Long userId; // por agora passamos o ID diretamente
+    private String email;
 }

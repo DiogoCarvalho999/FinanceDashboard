@@ -12,11 +12,20 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await api.post("/auth/login", { email, password });
-      setMessage("Login bem-sucedido!");
-      localStorage.setItem("user", JSON.stringify(response.data));
-      setTimeout(() => navigate("/dashboard"), 1500);
+
+      console.log("Login response:", response.data);
+
+      if (response.data.token && response.data.token.length > 50) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userEmail", response.data.email);
+        setMessage("Login efetuado com sucesso!");
+        navigate("/dashboard");
+      } else {
+        setMessage(response.data.token || "Credenciais inválidas.");
+      }
     } catch (err) {
-      setMessage("Credenciais inválidas.");
+      console.error("Erro no login:", err);
+      setMessage("Erro ao fazer login.");
     }
   };
 

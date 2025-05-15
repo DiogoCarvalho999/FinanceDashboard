@@ -17,9 +17,20 @@ export default function Register() {
         email,
         password,
       });
-      setMessage(response.data.message);
-      setTimeout(() => navigate("/"), 2000); // vai para login após 2s
+
+      console.log("Resposta do registo:", response.data);
+
+      if (
+        response.data.token &&
+        response.data.token === "Registo concluído com sucesso."
+      ) {
+        setMessage("Registo concluído com sucesso.");
+        setTimeout(() => navigate("/"), 2000);
+      } else {
+        setMessage(response.data.token || "Erro ao registar.");
+      }
     } catch (err) {
+      console.error("Erro no registo:", err);
       setMessage("Erro ao registar.");
     }
   };

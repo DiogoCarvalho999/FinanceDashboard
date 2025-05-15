@@ -1,12 +1,15 @@
 package com.diogo.finance.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class AuthResponse {
+    private String token;
+    private String email;
     private String message;
 }
+
