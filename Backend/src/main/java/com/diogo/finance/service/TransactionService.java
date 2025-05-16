@@ -54,9 +54,11 @@ public class TransactionService {
                 saved.getAmount(),
                 saved.getType(),
                 saved.getDate(),
-                saved.getCategory().getName()
+                saved.getCategory().getId(),     // ✅ categoryId
+                saved.getCategory().getName()    // ✅ categoryName
         );
     }
+
     public TransactionResponse updateTransaction(Long id, TransactionRequest request) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
@@ -82,8 +84,10 @@ public class TransactionService {
                 updated.getAmount(),
                 updated.getType(),
                 updated.getDate(),
+                updated.getCategory().getId(),
                 updated.getCategory().getName()
         );
+
     }
 
     public List<TransactionResponse> getAllTransactions(Long userId) {
@@ -97,9 +101,12 @@ public class TransactionService {
                         t.getAmount(),
                         t.getType(),
                         t.getDate(),
-                        t.getCategory().getName()))
+                        t.getCategory().getId(),       // ✅ categoryId
+                        t.getCategory().getName()      // ✅ categoryName
+                ))
                 .collect(Collectors.toList());
     }
+
 
     public void deleteTransaction(Long id) {
         transactionRepository.deleteById(id);
@@ -184,6 +191,25 @@ public class TransactionService {
                         Collectors.summingDouble(Transaction::getAmount)
                 ));
     }
+    public List<TransactionResponse> getTransactionsByEmailAndDateRange(String email, LocalDate start, LocalDate end) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Transaction> transactions = transactionRepository.findByUserAndDateBetween(user, start, end);
+
+        return transactions.stream()
+                .map(t -> new TransactionResponse(
+                        t.getId(),
+                        t.getDescription(),
+                        t.getAmount(),
+                        t.getType(),
+                        t.getDate(),
+                        t.getCategory().getId(),     // ✅ categoryId
+                        t.getCategory().getName()    // ✅ categoryName
+                ))
+                .toList();
+    }
+
 
     public Map<String, Double> getTotalsByCategoryByEmail(String email, LocalDate start, LocalDate end) {
         User user = userRepository.findByEmail(email)

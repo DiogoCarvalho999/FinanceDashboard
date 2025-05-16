@@ -45,10 +45,17 @@ public class TransactionController {
     }
 
     //  ENDPOINT ALTERADO PARA LIDAR COM EMAIL
-    @GetMapping("/by-email/{email}")
-    public List<Transaction> getTransactionsByEmail(@PathVariable String email) {
-        return transactionService.getTransactionsByEmail(email);
+    @GetMapping("/by-email")
+    public List<TransactionResponse> getTransactionsByEmail(
+            @RequestParam String email,
+            @RequestParam String start,
+            @RequestParam String end
+    ) {
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        return transactionService.getTransactionsByEmailAndDateRange(email, startDate, endDate);
     }
+
     @GetMapping("/summary/by-email")
     public SummaryResponse getSummaryByEmail(
             @RequestParam String email,
@@ -72,6 +79,17 @@ public class TransactionController {
             @RequestParam String end) {
         return transactionService.getTotalsByCategoryByEmail(email, LocalDate.parse(start), LocalDate.parse(end));
     }
+    @GetMapping("/balance/by-email")
+    public Double getBalanceByEmail(
+            @RequestParam String email,
+            @RequestParam String start,
+            @RequestParam String end) {
+
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        return transactionService.calculateBalanceByEmail(email, startDate, endDate);
+    }
+
 
     //  Antigo endpoint mantido para compatibilidade
     @GetMapping("/{userId}")

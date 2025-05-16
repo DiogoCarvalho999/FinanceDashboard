@@ -16,7 +16,8 @@ public class TransactionResponse {
     private Double amount;
     private String type;
     private LocalDate date;
-    private String category;
+    private Long categoryId;         // <-- novo campo
+    private String categoryName;     // renomeei de "category" para deixar claro
 
     public TransactionResponse(Transaction transaction) {
         this.id = transaction.getId();
@@ -24,6 +25,8 @@ public class TransactionResponse {
         this.amount = transaction.getAmount();
         this.type = transaction.getType();
         this.date = transaction.getDate();
-        this.category = transaction.getCategory() != null ? transaction.getCategory().getName() : null;
+        this.categoryId = transaction.getCategory() != null ? transaction.getCategory().getId() : null;
+        this.categoryName = transaction.getCategory() != null ? transaction.getCategory().getName() : null;
     }
 }
+

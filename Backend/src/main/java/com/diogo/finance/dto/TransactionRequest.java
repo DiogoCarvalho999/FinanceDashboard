@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class TransactionRequest {
+    private Long id;
     private String description;
     private Double amount;
     private String type; // "INCOME" ou "EXPENSE"
@@ -15,3 +16,4 @@ public class TransactionRequest {
     private Long categoryId;
     private String email;
 }
+
