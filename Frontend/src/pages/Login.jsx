@@ -1,6 +1,6 @@
 import { useState } from "react";
-import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -11,49 +11,70 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/auth/login", { email, password });
+      const response = await api.post("/auth/login", {
+        email,
+        password,
+      });
 
-      console.log("Login response:", response.data);
-
-      if (response.data.token && response.data.token.length > 50) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userEmail", response.data.email);
-        setMessage("Login efetuado com sucesso!");
+      if (response.data.token) {
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("authToken", response.data.token);
         navigate("/dashboard");
       } else {
-        setMessage(response.data.token || "Credenciais inválidas.");
+        setMessage("Credenciais inválidas.");
       }
     } catch (err) {
       console.error("Erro no login:", err);
-      setMessage("Erro ao fazer login.");
+      setMessage("Erro ao iniciar sessão.");
     }
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      <form onSubmit={handleLogin} className="flex flex-col gap-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="border p-2"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Palavra-passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border p-2"
-          required
-        />
-        <button type="submit" className="bg-green-600 text-white p-2 rounded">
-          Entrar
-        </button>
-        {message && <p className="text-sm mt-2">{message}</p>}
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-green-50 px-4">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center text-green-700 mb-6">
+          FinanceFlow
+        </h1>
+        <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">
+          Inicia sessão na tua conta
+        </h2>
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border border-gray-300 p-2 rounded"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Palavra-passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border border-gray-300 p-2 rounded"
+            required
+          />
+          <button
+            type="submit"
+            className="bg-green-600 text-white p-2 rounded hover:bg-green-700"
+          >
+            Entrar
+          </button>
+          {message && (
+            <p className="text-sm text-center text-red-500">{message}</p>
+          )}
+        </form>
+        <p className="text-sm mt-4 text-center text-gray-600">
+          Não tens conta?{" "}
+          <button
+            onClick={() => navigate("/register")}
+            className="text-green-600 font-semibold hover:underline"
+          >
+            Regista-te aqui
+          </button>
+        </p>
+      </div>
     </div>
   );
 }

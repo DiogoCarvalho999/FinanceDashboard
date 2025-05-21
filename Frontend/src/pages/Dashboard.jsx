@@ -163,15 +163,30 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
+    <div className="p-6 max-w-6xl mx-auto">
+      {/* Botão de logout */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = "/login";
+          }}
+          className="text-red-600 font-semibold hover:text-red-800"
+        >
+          🚪 Logout
+        </button>
+      </div>
+
+      <h2 className="text-3xl font-bold mb-6 text-green-700 transition-all duration-300">
+        📊 Painel Financeiro
+      </h2>
 
       {/* Filtros de mês e ano */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-wrap gap-4 mb-8">
         <select
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-          className="border p-2"
+          className="border border-gray-300 rounded px-4 py-2 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
         >
           {Array.from({ length: 12 }, (_, i) => (
             <option key={i + 1} value={i + 1}>
@@ -183,7 +198,7 @@ export default function Dashboard() {
         <select
           value={selectedYear}
           onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-          className="border p-2"
+          className="border border-gray-300 rounded px-4 py-2 shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
         >
           {Array.from({ length: 5 }, (_, i) => {
             const year = dayjs().year() - 2 + i;
@@ -197,22 +212,40 @@ export default function Dashboard() {
       </div>
 
       {/* Saldo, Receita, Despesa */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white dark:bg-gray-300 rounded shadow p-4 text-center">
-          <h3 className="text-lg font-semibold">💰 Saldo</h3>
-          <p className="text-xl font-bold">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        {/* Saldo */}
+        <div
+          className={`rounded-xl p-6 shadow text-center hover:scale-105 transition-all duration-300
+    ${summary?.balance >= 0 ? "bg-green-100" : "bg-red-100"}`}
+        >
+          <h3
+            className={`text-lg font-semibold ${
+              summary?.balance >= 0 ? "text-green-700" : "text-red-700"
+            }`}
+          >
+            💰 Saldo
+          </h3>
+          <p
+            className={`text-2xl font-bold ${
+              summary?.balance >= 0 ? "text-green-800" : "text-red-800"
+            }`}
+          >
             {(summary?.balance || 0).toFixed(2)} €
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-300 rounded shadow p-4 text-center">
-          <h3 className="text-lg font-semibold">📈 Receita</h3>
-          <p className="text-xl font-bold text-green-500">
+
+        {/* Receita */}
+        <div className="bg-white border border-green-200 rounded-xl p-6 shadow text-center hover:scale-105 transition-all duration-300">
+          <h3 className="text-lg font-semibold text-green-700">📈 Receita</h3>
+          <p className="text-2xl font-bold text-green-600">
             {(summary?.totalsByType?.INCOME || 0).toFixed(2)} €
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-300 rounded shadow p-4 text-center">
-          <h3 className="text-lg font-semibold">📉 Despesa</h3>
-          <p className="text-xl font-bold text-red-500">
+
+        {/* Despesa */}
+        <div className="bg-white border border-red-200 rounded-xl p-6 shadow text-center hover:scale-105 transition-all duration-300">
+          <h3 className="text-lg font-semibold text-red-600">📉 Despesa</h3>
+          <p className="text-2xl font-bold text-red-500">
             {(summary?.totalsByType?.EXPENSE || 0).toFixed(2)} €
           </p>
         </div>
@@ -224,7 +257,12 @@ export default function Dashboard() {
           resetForm();
           setShowForm(!showForm);
         }}
-        className="mb-4 bg-blue-600 text-white px-4 py-2 rounded"
+        className={`mb-6 px-6 py-3 rounded-lg font-semibold transition duration-300 shadow transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-green-400
+ ${
+   showForm
+     ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+     : "bg-green-600 text-white hover:bg-green-700"
+ }`}
       >
         {editingId ? "✏️ Cancelar Edição" : "+ Nova Transação"}
       </button>
@@ -233,14 +271,14 @@ export default function Dashboard() {
       {showForm && (
         <form
           onSubmit={handleNewTransaction}
-          className="mb-6 grid grid-cols-2 gap-4"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 bg-white p-6 rounded-lg shadow border border-gray-100"
         >
           <input
             type="text"
             placeholder="Descrição"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border p-2 col-span-2"
+            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
             required
           />
           <input
@@ -248,20 +286,20 @@ export default function Dashboard() {
             placeholder="Valor"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="border p-2"
+            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
             required
           />
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="border p-2"
+            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
             required
           />
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="border p-2"
+            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
           >
             <option value="EXPENSE">Despesa</option>
             <option value="INCOME">Receita</option>
@@ -269,64 +307,74 @@ export default function Dashboard() {
           <select
             value={categoryId}
             onChange={(e) => setCategoryId(Number(e.target.value))}
-            className="border p-2"
+            className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
           >
             <option value={1}>Alimentação</option>
             <option value={51}>Transporte</option>
             <option value={101}>Saúde</option>
             <option value={151}>Lazer</option>
           </select>
+
           <button
             type="submit"
-            className="bg-green-600 text-white p-2 rounded col-span-2"
+            className="bg-green-600 hover:bg-green-700 text-white p-3 rounded-md font-semibold transition-all duration-300 col-span-1 md:col-span-2 transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-green-400
+"
           >
-            {editingId ? "Guardar Alterações" : "Adicionar Transação"}
+            {editingId ? "💾 Guardar Alterações" : "➕ Adicionar Transação"}
           </button>
         </form>
       )}
 
       {/* Tabela de transações */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100 dark:bg-gray-300">
-              <th className="border px-4 py-2">Descrição</th>
-              <th className="border px-4 py-2">Valor</th>
-              <th className="border px-4 py-2">Data</th>
-              <th className="border px-4 py-2">Categoria</th>
-              <th className="border px-4 py-2">Tipo</th>
-              <th className="border px-4 py-2">Ações</th>
+      <div className="overflow-x-auto bg-white rounded-lg shadow border border-gray-100">
+        <table className="min-w-full table-auto">
+          <thead className="bg-green-100 text-green-800 text-sm">
+            <tr>
+              <th className="px-6 py-3 text-left">Descrição</th>
+              <th className="px-6 py-3 text-left">Valor (€)</th>
+              <th className="px-6 py-3 text-left">Data</th>
+              <th className="px-6 py-3 text-left">Categoria</th>
+              <th className="px-6 py-3 text-left">Tipo</th>
+              <th className="px-6 py-3 text-center">Ações</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-sm text-gray-800 divide-y divide-gray-200">
             {transactions.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center p-4">
-                  Nenhuma transação encontrada.
+                <td
+                  colSpan="6"
+                  className="px-6 py-4 text-center text-gray-500 italic"
+                >
+                  Nenhuma transação encontrada neste período.
                 </td>
               </tr>
             ) : (
               transactions.map((t) => (
-                <tr key={t.id} className="text-center">
-                  <td className="border px-4 py-2">{t.description}</td>
-                  <td className="border px-4 py-2">{t.amount} €</td>
-                  <td className="border px-4 py-2">{t.date}</td>
-                  <td className="border px-4 py-2">
+                <tr
+                  key={t.id}
+                  className="hover:bg-green-50 transition-colors duration-200"
+                >
+                  <td className="px-6 py-3 text-left">{t.description}</td>
+                  <td className="px-6 py-3 text-left">
+                    {t.amount.toFixed(2)} €
+                  </td>
+                  <td className="px-6 py-3 text-left">{t.date}</td>
+                  <td className="px-6 py-3 text-left">
                     {t.categoryName || "N/A"}
                   </td>
-                  <td className="border px-4 py-2">{t.type}</td>
-                  <td className="border px-4 py-2">
+                  <td className="px-6 py-3 text-left">{t.type}</td>
+                  <td className="px-6 py-3 text-center">
                     <div className="flex justify-center gap-3">
                       <button
                         onClick={() => startEdit(t)}
-                        className="text-black hover:text-blue-600 transform transition-transform duration-200 hover:scale-125"
+                        className="text-green-600 hover:text-green-800 transition-transform transform hover:scale-125"
                         title="Editar"
                       >
                         ✏️
                       </button>
                       <button
                         onClick={() => handleDeleteTransaction(t.id)}
-                        className="text-red-500 hover:text-red-700 transform transition-transform duration-200 hover:scale-125"
+                        className="text-red-500 hover:text-red-700 transition-transform transform hover:scale-125"
                         title="Apagar"
                       >
                         🗑️
@@ -343,8 +391,8 @@ export default function Dashboard() {
       {/* Gráficos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
         {/* Gráfico de barras: Receita vs Despesa */}
-        <div className="bg-white dark:bg-gray-300 p-4 rounded shadow">
-          <h3 className="text-lg font-semibold text-center mb-4">
+        <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
+          <h3 className="text-lg font-semibold text-center text-green-700 mb-4">
             📊 Por Tipo
           </h3>
           <BarChart
@@ -355,16 +403,16 @@ export default function Dashboard() {
               { name: "Despesa", valor: summary?.totalsByType?.EXPENSE || 0 },
             ]}
           >
-            <XAxis dataKey="name" stroke="#8884d8" />
+            <XAxis dataKey="name" stroke="#4caf50" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="valor" fill="#4f46e5" />
+            <Bar dataKey="valor" fill="#4caf50" />
           </BarChart>
         </div>
 
         {/* Gráfico de pizza: Por categoria */}
-        <div className="bg-white dark:bg-gray-300 p-4 rounded shadow">
-          <h3 className="text-lg font-semibold text-center mb-4">
+        <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
+          <h3 className="text-lg font-semibold text-center text-green-700 mb-4">
             🥧 Por Categoria
           </h3>
           <PieChart width={300} height={250}>
@@ -377,7 +425,7 @@ export default function Dashboard() {
               cx="50%"
               cy="50%"
               outerRadius={80}
-              fill="#8884d8"
+              fill="#81c784"
               label
             />
             <Tooltip />

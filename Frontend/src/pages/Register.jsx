@@ -18,8 +18,6 @@ export default function Register() {
         password,
       });
 
-      console.log("Resposta do registo:", response.data);
-
       if (
         response.data.token &&
         response.data.token === "Registo concluído com sucesso."
@@ -36,38 +34,59 @@ export default function Register() {
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Criar Conta</h2>
-      <form onSubmit={handleRegister} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border p-2"
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="border p-2"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Palavra-passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border p-2"
-          required
-        />
-        <button type="submit" className="bg-blue-600 text-white p-2 rounded">
-          Registar
-        </button>
-        {message && <p className="text-sm mt-2">{message}</p>}
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-green-50 px-4">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center text-green-700 mb-6">
+          FinanceFlow
+        </h1>
+        <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">
+          Cria a tua conta
+        </h2>
+        <form onSubmit={handleRegister} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Nome"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="border border-gray-300 p-2 rounded"
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border border-gray-300 p-2 rounded"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Palavra-passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border border-gray-300 p-2 rounded"
+            required
+          />
+          <button
+            type="submit"
+            className="bg-green-600 text-white p-2 rounded hover:bg-green-700"
+          >
+            Registar
+          </button>
+          {message && (
+            <p className="text-sm text-center text-red-500">{message}</p>
+          )}
+        </form>
+        <p className="text-sm mt-4 text-center text-gray-600">
+          Já tens conta?{" "}
+          <button
+            onClick={() => navigate("/")}
+            className="text-green-600 font-semibold hover:underline"
+          >
+            Faz login aqui
+          </button>
+        </p>
+      </div>
     </div>
   );
 }

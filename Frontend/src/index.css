@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@fontsource/inter";
+
+/* Fonte padrão para todo o projeto */
+body {
+  @apply font-inter bg-gray-50 text-gray-800 transition-colors duration-300;
+}
+
+/* Scrollbar suave e discreta */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.3);
+  border-radius: 4px;
+}
+
+/* Transições suaves globais */
+* {
+  transition: all 0.2s ease-in-out;
+}
