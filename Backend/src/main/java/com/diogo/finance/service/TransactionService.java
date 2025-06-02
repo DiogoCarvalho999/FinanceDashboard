@@ -183,7 +183,7 @@ public class TransactionService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Transaction> transactions = transactionRepository.findByUserAndDateBetween(user, start, end);
+        List<Transaction> transactions = transactionRepository.findByUserAndDateBetweenOrderByDateDesc(user, start, end);
 
         return transactions.stream()
                 .collect(Collectors.groupingBy(
@@ -195,7 +195,7 @@ public class TransactionService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Transaction> transactions = transactionRepository.findByUserAndDateBetween(user, start, end);
+        List<Transaction> transactions = transactionRepository.findByUserAndDateBetweenOrderByDateDesc(user, start, end);
 
         return transactions.stream()
                 .map(t -> new TransactionResponse(
@@ -215,7 +215,7 @@ public class TransactionService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Transaction> transactions = transactionRepository.findByUserAndDateBetween(user, start, end);
+        List<Transaction> transactions = transactionRepository.findByUserAndDateBetweenOrderByDateDesc(user, start, end);
 
         return transactions.stream()
                 .collect(Collectors.groupingBy(

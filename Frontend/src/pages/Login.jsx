@@ -6,6 +6,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -19,12 +20,19 @@ export default function Login() {
       if (response.data.token) {
         localStorage.setItem("userEmail", email);
         localStorage.setItem("authToken", response.data.token);
-        navigate("/dashboard");
+        setSuccess(true);
+        setMessage("✅ Login efetuado com sucesso!");
+        setTimeout(() => {
+          setMessage("");
+          navigate("/dashboard");
+        }, 1000);
       } else {
+        setSuccess(false);
         setMessage("Credenciais inválidas.");
       }
     } catch (err) {
       console.error("Erro no login:", err);
+      setSuccess(false);
       setMessage("Erro ao iniciar sessão.");
     }
   };
@@ -62,7 +70,13 @@ export default function Login() {
             Entrar
           </button>
           {message && (
-            <p className="text-sm text-center text-red-500">{message}</p>
+            <p
+              className={`text-sm text-center ${
+                success ? "text-green-600" : "text-red-500"
+              }`}
+            >
+              {message}
+            </p>
           )}
         </form>
         <p className="text-sm mt-4 text-center text-gray-600">

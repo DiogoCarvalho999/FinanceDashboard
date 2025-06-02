@@ -15,7 +15,10 @@
 /home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/repository/CategoryRepository.java
 /home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/repository/TransactionRepository.java
 /home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/repository/UserRepository.java
+/home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/security/CorsConfig.java
+/home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/security/JwtAuthenticationFilter.java
 /home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/security/SecurityConfig.java
 /home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/service/AuthService.java
+/home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/service/CustomUserDetailsService.java
 /home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/service/TransactionService.java
 /home/diogocarvalho1893/FinanceDashboard/Backend/src/main/java/com/diogo/finance/util/JwtUtil.java

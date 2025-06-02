@@ -26,6 +26,8 @@ export default function Dashboard() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [summary, setSummary] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetchSummary = async () => {
     try {
@@ -82,36 +84,40 @@ export default function Dashboard() {
   const handleNewTransaction = async (e) => {
     e.preventDefault();
 
+    const transactionData = {
+      description,
+      amount,
+      date,
+      type,
+      categoryId,
+      email: localStorage.getItem("userEmail"),
+    };
+
     try {
-      const email = localStorage.getItem("userEmail");
-
-      // Validação básica (opcional)
-      if (!description || !amount || !date || !type || !categoryId || !email) {
-        alert("Por favor preencha todos os campos.");
-        return;
-      }
-
-      const transactionData = {
-        description,
-        amount: parseFloat(amount),
-        date,
-        type,
-        categoryId,
-        email,
-      };
-
       if (editingId) {
         await api.put(`/transactions/${editingId}`, transactionData);
       } else {
         await api.post("/transactions", transactionData);
       }
 
+      setSuccessMessage(
+        editingId
+          ? "Transação editada com sucesso!"
+          : "Transação criada com sucesso!"
+      );
+      setErrorMessage(""); // limpa qualquer erro antigo
+
+      setTimeout(() => setSuccessMessage(""), 3000);
       resetForm();
+
       fetchTransactions();
       fetchSummary();
+
+      setShowForm(false);
     } catch (error) {
-      console.error("❌ Erro ao criar/editar transação:", error);
-      alert("Erro ao guardar transação. Verifica os dados e tenta novamente.");
+      console.error(error);
+      setErrorMessage("❌ Erro ao guardar a transação. Tente novamente.");
+      setSuccessMessage(""); // limpa sucesso antigo
     }
   };
 
@@ -267,6 +273,18 @@ export default function Dashboard() {
         {editingId ? "✏️ Cancelar Edição" : "+ Nova Transação"}
       </button>
 
+      {successMessage && (
+        <div className="mb-4 text-green-700 bg-green-100 border border-green-300 px-4 py-2 rounded text-center">
+          ✅ {successMessage}
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="mb-4 text-red-700 bg-red-100 border border-red-300 px-4 py-2 rounded text-center">
+          {errorMessage}
+        </div>
+      )}
+
       {/* Formulário */}
       {showForm && (
         <form
@@ -349,40 +367,42 @@ export default function Dashboard() {
                 </td>
               </tr>
             ) : (
-              transactions.map((t) => (
-                <tr
-                  key={t.id}
-                  className="hover:bg-green-50 transition-colors duration-200"
-                >
-                  <td className="px-6 py-3 text-left">{t.description}</td>
-                  <td className="px-6 py-3 text-left">
-                    {t.amount.toFixed(2)} €
-                  </td>
-                  <td className="px-6 py-3 text-left">{t.date}</td>
-                  <td className="px-6 py-3 text-left">
-                    {t.categoryName || "N/A"}
-                  </td>
-                  <td className="px-6 py-3 text-left">{t.type}</td>
-                  <td className="px-6 py-3 text-center">
-                    <div className="flex justify-center gap-3">
-                      <button
-                        onClick={() => startEdit(t)}
-                        className="text-green-600 hover:text-green-800 transition-transform transform hover:scale-125"
-                        title="Editar"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={() => handleDeleteTransaction(t.id)}
-                        className="text-red-500 hover:text-red-700 transition-transform transform hover:scale-125"
-                        title="Apagar"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+              [...transactions]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map((t) => (
+                  <tr
+                    key={t.id}
+                    className="hover:bg-green-50 transition-colors duration-200"
+                  >
+                    <td className="px-6 py-3 text-left">{t.description}</td>
+                    <td className="px-6 py-3 text-left">
+                      {t.amount.toFixed(2)} €
+                    </td>
+                    <td className="px-6 py-3 text-left">{t.date}</td>
+                    <td className="px-6 py-3 text-left">
+                      {t.categoryName || "N/A"}
+                    </td>
+                    <td className="px-6 py-3 text-left">{t.type}</td>
+                    <td className="px-6 py-3 text-center">
+                      <div className="flex justify-center gap-3">
+                        <button
+                          onClick={() => startEdit(t)}
+                          className="text-green-600 hover:text-green-800 transition-transform transform hover:scale-125"
+                          title="Editar"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTransaction(t.id)}
+                          className="text-red-500 hover:text-red-700 transition-transform transform hover:scale-125"
+                          title="Apagar"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
             )}
           </tbody>
         </table>
