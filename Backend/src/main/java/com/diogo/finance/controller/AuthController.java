@@ -5,6 +5,7 @@ import com.diogo.finance.dto.AuthResponse;
 import com.diogo.finance.dto.RegisterRequest;
 import com.diogo.finance.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

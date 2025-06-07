@@ -7,6 +7,9 @@ import com.diogo.finance.model.User;
 import com.diogo.finance.repository.UserRepository;
 import com.diogo.finance.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ public class AuthService {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -36,14 +42,16 @@ public class AuthService {
     }
 
     public AuthResponse login(AuthRequest request) {
-        return userRepository.findByEmail(request.getEmail())
-                .filter(user -> encoder.matches(request.getPassword(), user.getPassword()))
-                .map(user -> new AuthResponse(
-                        jwtUtil.generateToken(user.getEmail()),
-                        user.getEmail(),
-                        "Login efetuado com sucesso."
-                ))
-                .orElse(new AuthResponse(null, null, "Credenciais inválidas"));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+
+            String token = jwtUtil.generateToken(request.getEmail());
+            return new AuthResponse(token, request.getEmail(), "Login efetuado com sucesso.");
+        } catch (AuthenticationException e) {
+            return new AuthResponse(null, null, "Credenciais inválidas");
+        }
     }
 
 }

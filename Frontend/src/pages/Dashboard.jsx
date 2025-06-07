@@ -86,10 +86,10 @@ export default function Dashboard() {
 
     const transactionData = {
       description,
-      amount,
+      amount: parseFloat(amount),
       date,
       type,
-      categoryId,
+      categoryId: parseInt(categoryId), // força a conversão para número
       email: localStorage.getItem("userEmail"),
     };
 

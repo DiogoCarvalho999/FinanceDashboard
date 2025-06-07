@@ -32,6 +32,9 @@ public class TransactionService {
     private CategoryRepository categoryRepository;
 
     public TransactionResponse addTransaction(TransactionRequest request) {
+        System.out.println("➡️ Categorias disponíveis:");
+        categoryRepository.findAll().forEach(c -> System.out.println(c.getId() + " - " + c.getName()));
+        System.out.println("🧪 CategoryId recebido: " + request.getCategoryId());
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

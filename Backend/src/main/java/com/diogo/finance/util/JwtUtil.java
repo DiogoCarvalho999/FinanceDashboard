@@ -22,7 +22,7 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
-        byte[] decodedKey = Base64.getEncoder().encode(secret.getBytes());
+        byte[] decodedKey = Base64.getDecoder().decode(secret);
         this.key = Keys.hmacShaKeyFor(decodedKey);
     }
 
