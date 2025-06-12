@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://13.61.146.251:8080",
+  baseURL: "https://financeflow.it.com", // ✅ HTTPS + domínio personalizado
 });
 
 api.interceptors.request.use((config) => {
