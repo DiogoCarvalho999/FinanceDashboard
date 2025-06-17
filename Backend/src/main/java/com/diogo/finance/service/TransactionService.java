@@ -10,7 +10,11 @@ import com.diogo.finance.repository.CategoryRepository;
 import com.diogo.finance.repository.TransactionRepository;
 import com.diogo.finance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -234,5 +238,4 @@ public class TransactionService {
 
         return new SummaryResponse(balance, byType, byCategory);
     }
-
 }

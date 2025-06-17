@@ -144,7 +144,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    console.log("🕵️ useEffect triggered", selectedMonth, selectedYear);
     fetchTransactions();
     fetchSummary();
   }, [selectedMonth, selectedYear]);
