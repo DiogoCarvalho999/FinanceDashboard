@@ -1,0 +1,93 @@
+# 💰 FinanceFlow – Personal Finance Dashboard
+
+This is a complete **full stack web application** designed to help users track their personal finances, visualize income and expenses with interactive graphs, and manage transactions easily – all within a clean and intuitive dashboard.
+
+![Login Page](src/assets/Screenshot-login.png)
+![Dashboard](src/assets/Screenshot-dashboard.png)
+
+---
+
+## 🚀 Technologies Used
+
+🖥️ **Backend**
+- Java 21 + Spring Boot
+- Spring Security (JWT)
+- PostgreSQL + Spring Data JPA
+- Maven
+
+🌐 **Frontend**
+- React.js
+- Axios
+- Tailwind CSS
+- Chart.js
+- React Router DOM
+- Vercel (hosting)
+
+☁️ **Deployment**
+- Backend: AWS EC2 (Nginx + HTTPS)
+- Frontend: Vercel
+- Domain: [financeflow.it.com](https://financeflow.it.com)
+
+---
+
+## ✨ Features
+
+- 🔐 JWT Authentication (Login & Register)
+- 📊 Dashboard with income/expense summaries
+- ➕ Add, ✏️ Edit & 🗑️ Delete transactions
+- 🔎 Filter by month and year
+- 📈 Pie & Bar charts for category analysis
+- 🧠 Clean codebase with DTOs and services
+- 🌍 Fully deployed with HTTPS & CORS configured
+- 🖥️ Responsive design for all screen sizes
+
+---
+
+## 📁 Project Structure
+
+Backend/
+├── src/main/java/com/diogo/finance/
+│ ├── controller/
+│ ├── model/
+│ ├── repository/
+│ ├── security/
+│ ├── service/
+│ └── FinanceDashboardApplication.java
+└── application.properties (.env used on EC2)
+
+Frontend/
+├── src/components/
+├── src/pages/
+├── src/services/
+├── App.jsx
+└── main.jsx
+
+---
+
+## 🔗 Links
+
+- 🔴 **Live App**: [https://finance-dashboard-phi-nine.vercel.app](https://finance-dashboard-phi-nine.vercel.app)
+- 🐙 **GitHub**: [github.com/DiogoCarvalho999](https://github.com/DiogoCarvalho999)
+- 💼 **LinkedIn**: [linkedin.com/in/diogoadcarvalho](https://linkedin.com/in/diogoadcarvalho)
+
+---
+
+## 📬 Contact
+
+📧 diogodias0001@hotmail.com
+
+You can also use the contact form available on the site.
+
+---
+
+## 🧠 Final Notes
+
+This project is part of my journey as a **Junior Full Stack Developer**, with a strong passion for backend development and building real-world applications.  
+It demonstrates:
+
+- Good understanding of backend/frontend integration  
+- Secure user authentication with JWT  
+- Clean separation of logic using the service layer and DTOs  
+- Deployment of full stack apps with HTTPS, custom domains, and CORS configuration
+
+Made with 💙 by **Diogo Carvalho**
